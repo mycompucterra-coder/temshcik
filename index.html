@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>💸 Симулятор Темщика</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ ЭКРАН: ГЛАВНАЯ ============ -->
+<section class="screen active" id="screen-main">
+  <div class="bg-layer" style="background-image:url('assets/bg/bg-main.png')"></div>
+
+  <header class="top-bar">
+    <h1 class="logo">💸 СИМУЛЯТОР ТЕМЩИКА 💸</h1>
+    <button class="icon-btn" id="btnOpenSettings" title="Настройки">⚙️</button>
+  </header>
+
+  <div class="stats-panel">
+    <div class="stat">
+      <img class="stat-icon" src="assets/ui/icon-money.png" onerror="this.replaceWith('💰')" alt="">
+      <div class="stat-label">Баланс</div>
+      <div class="stat-value" id="uiBalance">0 ₽</div>
+    </div>
+    <div class="stat">
+      <img class="stat-icon" src="assets/ui/icon-click.png" onerror="this.replaceWith('👆')" alt="">
+      <div class="stat-label">За клик</div>
+      <div class="stat-value small" id="uiPerClick">+1 ₽</div>
+    </div>
+    <div class="stat">
+      <img class="stat-icon" src="assets/ui/icon-per-sec.png" onerror="this.replaceWith('⏱')" alt="">
+      <div class="stat-label">В секунду</div>
+      <div class="stat-value small" id="uiPerSecond">+0 ₽</div>
+    </div>
+    <div class="stat">
+      <img class="stat-icon" src="assets/ui/icon-mult.png" onerror="this.replaceWith('✨')" alt="">
+      <div class="stat-label">Множитель</div>
+      <div class="stat-value small" id="uiMultiplier">x1</div>
+    </div>
+    <div class="stat">
+      <img class="stat-icon" src="assets/ui/icon-respect.png" onerror="this.replaceWith('🎖')" alt="">
+      <div class="stat-label">Уважение</div>
+      <div class="stat-value small" id="uiRespect">0</div>
+    </div>
+  </div>
+
+  <div class="click-area" id="clickArea">
+    <button class="click-btn" id="btnMutit">
+      <img id="btnMutitImg" src="assets/ui/btn-mutit.png" onerror="this.style.display='none'" alt="">
+      <span class="click-btn-text">МУТИТЬ</span>
+    </button>
+    <div class="floating-layer" id="floatLayer"></div>
+  </div>
+
+  <nav class="nav-bar">
+    <button class="nav-btn active" data-screen="main">🏠 Главная</button>
+    <button class="nav-btn" data-screen="shop">📦 Схемы</button>
+    <button class="nav-btn" data-screen="casino">🎰 Казино</button>
+    <button class="nav-btn" data-screen="stats">📊 Стата</button>
+    <button class="nav-btn" data-screen="achieve">🏆 Ачивки</button>
+    <button class="nav-btn" data-screen="prestige">🏠 Переезд</button>
+  </nav>
+</section>
+
+<!-- ============ ЭКРАН: СХЕМЫ ============ -->
+<section class="screen" id="screen-shop">
+  <div class="bg-layer" style="background-image:url('assets/bg/bg-shop.png')"></div>
+  <header class="top-bar">
+    <button class="icon-btn" data-screen="main">⬅</button>
+    <h2 class="screen-title">📦 СХЕМЫ</h2>
+  </header>
+  <div class="upgrades-grid" id="upgradesGrid"></div>
+</section>
+
+<!-- ============ ЭКРАН: КАЗИНО ============ -->
+<section class="screen" id="screen-casino">
+  <div class="bg-layer" style="background-image:url('assets/casino/casino-bg.png')"></div>
+  <header class="top-bar">
+    <button class="icon-btn" data-screen="main">⬅</button>
+    <h2 class="screen-title">🎰 КАЗИНО</h2>
+  </header>
+
+  <div class="casino-wrap">
+
+    <div class="slot-machine">
+      <div class="slot-reels">
+        <div class="reel" id="reel0">
+          <div class="reel-cell" data-sym="cherry">🍒</div>
+        </div>
+        <div class="reel" id="reel1">
+          <div class="reel-cell" data-sym="cherry">🍒</div>
+        </div>
+        <div class="reel" id="reel2">
+          <div class="reel-cell" data-sym="cherry">🍒</div>
+        </div>
+      </div>
+      <div class="slot-result" id="slotResult">Жми «КРУТИТЬ»</div>
+    </div>
+
+    <div class="bet-panel">
+      <div class="bet-label">Ставка:</div>
+      <div class="bet-options" id="betOptions">
+        <button class="bet-btn" data-bet="100">100 ₽</button>
+        <button class="bet-btn" data-bet="500">500 ₽</button>
+        <button class="bet-btn active" data-bet="1000">1K ₽</button>
+        <button class="bet-btn" data-bet="5000">5K ₽</button>
+        <button class="bet-btn" data-bet="10000">10K ₽</button>
+        <button class="bet-btn va-bank" data-bet="all">💥 ВА-БАНК</button>
+      </div>
+    </div>
+
+    <div class="casino-actions">
+      <button class="big-action-btn spin-btn" id="btnSpin">🎰 КРУТИТЬ</button>
+      <button class="big-action-btn auto-btn" id="btnAuto">🔁 x10</button>
+    </div>
+
+    <div class="casino-balance">
+      Баланс: <b id="casinoBalance">0 ₽</b>
+      <span class="casino-current-bet">Ставка: <b id="casinoBet">1000 ₽</b></span>
+    </div>
+
+    <div class="casino-history">
+      <div class="history-title">📜 Последние спины</div>
+      <div class="history-list" id="historyList">
+        <div class="history-empty">Пока пусто</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ ЭКРАН: СТАТА ============ -->
+<section class="screen" id="screen-stats">
+  <div class="bg-layer" style="background-image:url('assets/bg/bg-stats.png')"></div>
+  <header class="top-bar">
+    <button class="icon-btn" data-screen="main">⬅</button>
+    <h2 class="screen-title">📊 СТАТА</h2>
+  </header>
+  <div class="stats-detail">
+    <div class="stat-line"><span>Всего кликов:</span><b id="uiTotalClicks">0</b></div>
+    <div class="stat-line"><span>Заработано всего:</span><b id="uiTotalEarned">0 ₽</b></div>
+    <div class="stat-line"><span>Уровень хаты:</span><b id="uiPrestigeLevel">0</b></div>
+    <div class="stat-line"><span>Множитель хаты:</span><b id="uiPrestigeMult">x1</b></div>
+    <div class="stat-line"><span>Ментов отшито:</span><b id="uiCopsBeaten">0</b></div>
+    <div class="stat-line"><span>Крыш откуплено:</span><b id="uiKryshaPaid">0</b></div>
+    <div class="stat-line"><span>Глав пройдено:</span><b id="uiStoryProgress">0 / 5</b></div>
+    <div class="stat-line"><span>Спинов в казино:</span><b id="uiCasinoSpins">0</b></div>
+    <div class="stat-line"><span>Крупнейший выигрыш:</span><b id="uiCasinoBigWin">0 ₽</b></div>
+  </div>
+</section>
+
+<!-- ============ ЭКРАН: АЧИВКИ ============ -->
+<section class="screen" id="screen-achieve">
+  <div class="bg-layer" style="background-image:url('assets/bg/bg-achieve.png')"></div>
+  <header class="top-bar">
+    <button class="icon-btn" data-screen="main">⬅</button>
+    <h2 class="screen-title">🏆 АЧИВКИ</h2>
+  </header>
+  <div class="achieve-grid" id="achieveGrid"></div>
+</section>
+
+<!-- ============ ЭКРАН: ПЕРЕЕЗД ============ -->
+<section class="screen" id="screen-prestige">
+  <div class="bg-layer" style="background-image:url('assets/bg/bg-prestige.png')"></div>
+  <header class="top-bar">
+    <button class="icon-btn" data-screen="main">⬅</button>
+    <h2 class="screen-title">🏠 ПЕРЕЕЗД</h2>
+  </header>
+  <div class="prestige-box">
+    <p>Собери <b>1 000 000 ₽</b> и свали из спальника. Каждая новая хата даёт <b>+20%</b> ко всему доходу навсегда.</p>
+    <div class="stat-line"><span>Текущая хата:</span><b id="uiPrestigeLevel2">0</b></div>
+    <div class="stat-line"><span>Множитель:</span><b id="uiPrestigeMult2">x1</b></div>
+    <button class="big-action-btn" id="btnPrestige" disabled>🏠 ПЕРЕЕХАТЬ</button>
+    <p class="hint" id="prestigeHint">Нужно 1 000 000 ₽</p>
+  </div>
+</section>
+
+<!-- ============ ЭКРАН: НАСТРОЙКИ ============ -->
+<section class="screen" id="screen-settings">
+  <div class="bg-layer" style="background-image:url('assets/bg/bg-settings.png')"></div>
+  <header class="top-bar">
+    <button class="icon-btn" data-screen="main">⬅</button>
+    <h2 class="screen-title">⚙️ НАСТРОЙКИ</h2>
+  </header>
+  <div class="settings-box">
+
+    <div class="sound-panel">
+      <div class="sound-row">
+        <button class="sound-toggle" id="btnMute" title="Вкл/выкл звук">
+          <span id="muteIcon">🔊</span>
+        </button>
+        <div class="sound-slider-wrap">
+          <div class="sound-label">Громкость</div>
+          <input type="range" id="volumeSlider" min="0" max="100" value="70" class="volume-slider">
+          <div class="sound-percent"><span id="volumeValue">70</span>%</div>
+        </div>
+      </div>
+      <div class="sound-row">
+        <button class="sound-toggle small" id="btnMusic" title="Вкл/выкл музыку">
+          <span id="musicIcon">🎵</span>
+        </button>
+        <div class="sound-label-inline">Фоновая музыка</div>
+      </div>
+    </div>
+
+    <button class="big-action-btn danger" id="btnReset">🗑 СБРОСИТЬ ПРОГРЕСС</button>
+    <p class="hint">Прогресс сохраняется автоматически каждые 5 секунд.</p>
+  </div>
+</section>
+
+<!-- ============ МОДАЛКА: КРЫША ============ -->
+<div class="modal-overlay hidden" id="modalKrysha">
+  <div class="modal-card krysha-card">
+    <div class="modal-bg" style="background-image:url('assets/events/krysha-bg.png')"></div>
+    <img class="modal-cop" src="assets/events/cop.png" onerror="this.replaceWith('🚔')" alt="">
+    <h2>🚔 КРЫША</h2>
+    <p>Мусора на хвосте! Откупиться?</p>
+    <div class="modal-timer" id="kryshaTimer">5</div>
+    <div class="modal-actions">
+      <button class="modal-btn pay" id="kryshaPay">💰 Откупиться (-10%)</button>
+      <button class="modal-btn ignore" id="kryshaIgnore">🚶 Забить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ МОДАЛКА: ФАЙТ С МЕНТОМ (QTE) ============ -->
+<div class="modal-overlay hidden" id="modalFight">
+  <div class="modal-card fight-card">
+    <img class="modal-cop" src="assets/events/boss-cop.png" onerror="this.replaceWith('👮')" alt="">
+    <h2>👊 ФАЙТ С МЕНТОМ</h2>
+    <p>Жми <b>ПРОБЕЛ</b> или <b>БИТЬ</b>, когда полоска в зелёной зоне!</p>
+    <div class="qte-track"><div class="qte-zone"></div><div class="qte-cursor" id="qteCursor"></div></div>
+    <div class="modal-timer" id="fightTimer">3</div>
+    <button class="modal-btn pay" id="fightStrike" style="margin-top:12px;">👊 БИТЬ</button>
+    <p class="hint">Победа: +бонус. Промах: -15% бабок.</p>
+  </div>
+</div>
+
+<!-- ============ МОДАЛКА: СЮЖЕТ-ДИАЛОГ ============ -->
+<div class="modal-overlay hidden" id="modalStory">
+  <div class="story-modal" id="storyModal">
+    <div class="story-bg" id="storyBg"></div>
+
+    <div class="story-header">
+      <div class="story-chapter" id="storyChapter">ГЛАВА 1</div>
+      <div class="story-title-sm" id="storyTitleSm">Первый движ</div>
+    </div>
+
+    <div class="story-illustration" id="storyIllustration"></div>
+
+    <div class="story-dialogue" id="storyDialogue">
+      <div class="story-avatar-wrap" id="storyAvatarWrap">
+        <img class="story-avatar" id="storyAvatar" alt="">
+        <div class="story-avatar-fallback" id="storyAvatarFallback">🧑</div>
+      </div>
+      <div class="story-bubble-wrap">
+        <div class="story-name" id="storyName">Тёма</div>
+        <div class="story-bubble">
+          <span class="story-text" id="storyText"></span>
+          <span class="story-cursor" id="storyCursor">▍</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="story-hint" id="storyHint">Клик — дальше ▸</div>
+
+    <div class="story-final hidden" id="storyFinal">
+      <div class="story-reward" id="storyReward"></div>
+      <button class="modal-btn pay story-next" id="storyNext">Дальше ➡</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ТОСТЫ ============ -->
+<div class="toast-layer" id="toastLayer"></div>
+
+<!-- ============ ПОДКЛЮЧЕНИЕ СКРИПТОВ (ПОРЯДОК ВАЖЕН) ============ -->
+<script src="data/upgrades.js"></script>
+<script src="js/state.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/screens.js"></script>
+<script src="js/story.js"></script>
+<script src="js/upgrades.js"></script>
+<script src="js/events.js"></script>
+<script src="js/fights.js"></script>
+<script src="js/prestige.js"></script>
+<script src="js/casino.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
